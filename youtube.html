@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style type="text/css">
+    *{
+        padding: 0%;
+        margin: 0%;
+    }
+    #videos{
+        display:grid;
+        padding: 5%;
+        grid-template-columns: repeat(4 ,20%);
+        gap: 5%;
+       
+
+        
+    }
+    iframe{
+        width: 100%;
+    }
+    .navbar{
+        height: 50px;
+    
+         
+        padding: 5px;
+    }
+    input{
+        margin-left: 35%;
+        margin-top: 10px;
+        width: 500px;
+    }
+    
+    </style>
+</head>
+<body>
+    <div class="navbar">
+    <input type="text" id="query">
+    <button onclick="serachvideo()">Search</button>
+
+
+    </div>
+      <div style="height:1px;background-color:black;margin-left:5px"></div>
+    <div id="videos"></div>
+    
+
+</body>
+</html>
+<script>
+
+//https://youtube.googleapis.com/youtube/v3/search?key=AIzaSyAZQ-duskhGoc5rnUdFxzD31m7YLNyE7bg
+//AIzaSyAZQ-duskhGoc5rnUdFxzD31m7YLNyE7bg
+
+
+let videos_div=document.getElementById("videos");
+async function serachvideo(){
+
+
+    videos_div.innerHTML=null;
+    
+    let q=document.getElementById("query").value
+    let res=await fetch(`https://youtube.googleapis.com/youtube/v3/search?q=${q}&key=AIzaSyDhbc1Qk2VZ6Ko1hww35lz3RQE4m55-ygk&maxResults=20`)
+
+    let data=await res.json();
+
+
+    
+    
+
+
+let {items}  = data;
+
+   items=items.filter((el)=>{
+       return el.id.videoId!=undefined
+   })
+
+ items=items.filter((el)=>{
+     return el.id.videoId != undefined;
+ })
+
+ items.forEach(({id:{videoId}}) => {
+     
+      
+   let div=document.createElement("div")
+    
+   div.style.marginTop="20px"
+
+   div.innerHTML=`<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+
+     videos_div.append(div)
+
+
+    
+
+ });
+     
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
